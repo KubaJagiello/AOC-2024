@@ -32,3 +32,7 @@ fun <T : Comparable<T>> List<T>.isSorted(): Boolean {
 
   return true
 }
+
+fun List<Int>.product(): Int {
+  return this.fold(1) { acc, num -> acc * num }
+}
