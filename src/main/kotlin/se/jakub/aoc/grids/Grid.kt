@@ -20,13 +20,69 @@ sealed class Direction(val dx: Int, val dy: Int) {
   companion object {
     val allDirections = listOf(Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight)
   }
+
+  fun rotateRight(): Direction =
+      when (this) {
+        Up -> Right
+        Right -> Down
+        Down -> Left
+        Left -> Up
+        else -> throw RuntimeException("?")
+      }
 }
 
-class Grid(private val lines: List<String>) {
-  val rows = lines.size
-  val cols = lines[0].length
+data class Position(val x: Int, val y: Int)
 
-  fun get(x: Int, y: Int): Char = lines[y][x]
+class Grid(lines: List<String>) {
+  private val mutableLines: MutableList<StringBuilder> =
+      lines.map { StringBuilder(it) }.toMutableList()
+  val rows = mutableLines.size
+  val cols = if (mutableLines.isNotEmpty()) mutableLines[0].length else 0
+
+  fun get(position: Position): Char = mutableLines[position.y][position.x]
+
+  fun set(position: Position, value: Char) {
+    mutableLines[position.y][position.x] = value
+  }
+
+  fun findFirstPositionOf(c: Char): Position? {
+    for (position in getPositions()) {
+      if (get(position) == c) {
+        return position
+      }
+    }
+    return null
+  }
+
+  fun getPathUntil(
+      position: Position,
+      direction: Direction,
+      until: Char,
+  ): Pair<List<Position>, Boolean> {
+    val path: MutableList<Position> = mutableListOf()
+    path.add(position)
+    var newX = position.x
+    var newY = position.y
+    var i = 0
+
+    while (isInBounds(newX, newY)) {
+      newX += direction.dx
+      newY += direction.dy
+
+      if (!isInBounds(newX, newY)) {
+        return Pair(path, false)
+      }
+
+      if (get(Position(newX, newY)) == until) {
+        return Pair(path, true)
+      }
+
+      path.add(Position(newX, newY))
+      i++
+    }
+
+    return Pair(path, false)
+  }
 
   fun getPath(x: Int, y: Int, steps: Int, direction: Direction): List<Char> {
 
@@ -37,16 +93,31 @@ class Grid(private val lines: List<String>) {
 
       if (!isInBounds(newX, newY)) return path
 
-      path.add(get(newX, newY))
+      path.add(get(Position(newX, newY)))
     }
 
     return path
   }
 
-  fun getPositions(): List<Pair<Int, Int>> = positions
+  fun getPositions(): List<Position> = positions
 
-  private val positions: List<Pair<Int, Int>> =
-      (0 until rows).flatMap { x -> (0 until cols).map { y -> Pair(x, y) } }
+  fun print(grid: Grid, visited: Set<Position> = setOf()) {
+    for (y in 0 until grid.rows) {
+      for (x in 0 until grid.cols) {
+        if (visited.contains(Position(x, y))) {
+          print("X")
+        } else {
+          print(grid.get(Position(x, y)))
+        }
+      }
+      println()
+    }
+  }
+
+  private val positions: List<Position> =
+      (0 until rows).flatMap { x -> (0 until cols).map { y -> Position(x, y) } }
 
   private fun isInBounds(x: Int, y: Int): Boolean = x in 0 until cols && y in 0 until rows
+
+  fun isInBounds(position: Position): Boolean = isInBounds(position.x, position.y)
 }
