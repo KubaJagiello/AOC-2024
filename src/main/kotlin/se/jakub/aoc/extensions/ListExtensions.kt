@@ -36,3 +36,7 @@ fun <T : Comparable<T>> List<T>.isSorted(): Boolean {
 fun List<Int>.product(): Int {
   return this.fold(1) { acc, num -> acc * num }
 }
+
+fun List<String>.toInts(): List<Int> {
+  return this.map { it.toInt() }
+}
