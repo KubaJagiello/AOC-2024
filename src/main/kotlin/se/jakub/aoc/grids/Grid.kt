@@ -29,6 +29,18 @@ sealed class Direction(val dx: Int, val dy: Int) {
         Left -> Up
         else -> throw RuntimeException("?")
       }
+
+  fun getOppositeDirection(): Direction =
+      when (this) {
+        Up -> Down
+        Right -> Left
+        Down -> Up
+        Left -> Right
+        DownLeft -> UpRight
+        DownRight -> UpLeft
+        UpLeft -> DownRight
+        UpRight -> DownLeft
+      }
 }
 
 data class Position(val x: Int, val y: Int)
@@ -54,15 +66,43 @@ class Grid(lines: List<String>) {
     return null
   }
 
+  fun getPathUntils(
+      startPosition: Position,
+      direction: Direction,
+      until: Char,
+  ): List<Position> {
+    var newX = startPosition.x
+    var newY = startPosition.y
+    var i = 0
+
+    val listOfUntils = mutableListOf<Position>()
+
+    while (isInBounds(newX, newY)) {
+      newX += direction.dx
+      newY += direction.dy
+
+      if (!isInBounds(newX, newY)) {
+        return listOfUntils
+      }
+
+      if (get(Position(newX, newY)) == until) {
+        listOfUntils.add(Position(newX, newY))
+      }
+      i++
+    }
+
+    return listOfUntils
+  }
+
   fun getPathUntil(
-      position: Position,
+      startPosition: Position,
       direction: Direction,
       until: Char,
   ): Pair<List<Position>, Boolean> {
     val path: MutableList<Position> = mutableListOf()
-    path.add(position)
-    var newX = position.x
-    var newY = position.y
+    path.add(startPosition)
+    var newX = startPosition.x
+    var newY = startPosition.y
     var i = 0
 
     while (isInBounds(newX, newY)) {
@@ -105,7 +145,7 @@ class Grid(lines: List<String>) {
     for (y in 0 until grid.rows) {
       for (x in 0 until grid.cols) {
         if (visited.contains(Position(x, y))) {
-          print("X")
+          print("#")
         } else {
           print(grid.get(Position(x, y)))
         }

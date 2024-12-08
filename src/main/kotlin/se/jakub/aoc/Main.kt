@@ -1,10 +1,10 @@
 package se.jakub.aoc
 
+import se.jakub.aoc.day08.Day08
 import java.io.File
-import se.jakub.aoc.day07.Day07
 
 fun main() {
-  runDay(Day07())
+  runDay(Day08())
 }
 
 fun runDay(dayInstance: Day) {
