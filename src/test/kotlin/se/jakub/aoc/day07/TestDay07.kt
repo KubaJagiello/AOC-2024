@@ -9,7 +9,7 @@ class TestDay07 {
   fun testPart1() {
     val day07 = Day07()
     val input = File("src/main/resources/inputs/day07/day07-part1.txt").readLines()
-    val expected = "Not Implemented"
+    val expected = "663613490587".toBigDecimal()
 
     assertEquals(expected, day07.part1(input))
   }
@@ -18,7 +18,7 @@ class TestDay07 {
   fun testPart2() {
     val day07 = Day07()
     val input = File("src/main/resources/inputs/day07/day07-part2.txt").readLines()
-    val expected = "Not Implemented"
+    val expected = "110365987435001".toBigDecimal()
 
     assertEquals(expected, day07.part2(input))
   }

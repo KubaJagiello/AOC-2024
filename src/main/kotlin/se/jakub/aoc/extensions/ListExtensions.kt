@@ -40,3 +40,9 @@ fun List<Int>.product(): Int {
 fun List<String>.toInts(): List<Int> {
   return this.map { it.toInt() }
 }
+
+fun <T> List<T>.permutations(length: Int): List<List<T>> {
+  if (length == 0) return listOf(emptyList())
+
+  return this.flatMap { element -> this.permutations(length - 1).map { listOf(element) + it } }
+}

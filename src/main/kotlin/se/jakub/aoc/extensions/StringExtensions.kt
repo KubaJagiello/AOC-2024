@@ -7,3 +7,7 @@ fun String.splitBySpaces(): List<String> {
 fun String.getInts(): List<Int> {
   return """\d+""".toRegex().findAll(this).map { it.value.toInt() }.toList()
 }
+
+fun String.getDoubles(): List<Double> {
+  return """\d+""".toRegex().findAll(this).map { it.value.toDouble() }.toList()
+}
