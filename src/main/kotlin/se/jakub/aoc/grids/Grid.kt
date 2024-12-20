@@ -19,6 +19,7 @@ sealed class Direction(val dx: Int, val dy: Int) {
 
   companion object {
     val allDirections = listOf(Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight)
+    val cardinalDirections = listOf(Up, Down, Left, Right)
   }
 
   fun rotateRight(): Direction =
@@ -43,7 +44,11 @@ sealed class Direction(val dx: Int, val dy: Int) {
       }
 }
 
-data class Position(val x: Int, val y: Int)
+data class Position(val x: Int, val y: Int) {
+  fun move(direction: Direction): Position {
+    return Position(this.x + direction.dx, this.y + direction.dy)
+  }
+}
 
 class Grid(lines: List<String>) {
   private val mutableLines: MutableList<StringBuilder> =

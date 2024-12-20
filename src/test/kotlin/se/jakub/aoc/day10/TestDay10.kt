@@ -9,7 +9,7 @@ class TestDay10 {
   fun testPart1() {
     val day10 = Day10()
     val input = File("src/main/resources/inputs/day10/day10-part1.txt").readLines()
-    val expected = "Not Implemented"
+    val expected = 517
 
     assertEquals(expected, day10.part1(input))
   }
@@ -18,7 +18,7 @@ class TestDay10 {
   fun testPart2() {
     val day10 = Day10()
     val input = File("src/main/resources/inputs/day10/day10-part2.txt").readLines()
-    val expected = "Not Implemented"
+    val expected = 1116
 
     assertEquals(expected, day10.part2(input))
   }
