@@ -11,3 +11,7 @@ fun String.getInts(): List<Int> {
 fun String.getDoubles(): List<Double> {
   return """\d+""".toRegex().findAll(this).map { it.value.toDouble() }.toList()
 }
+
+fun String.getLongs(): List<Long> {
+  return """\d+""".toRegex().findAll(this).map { it.value.toLong() }.toList()
+}
